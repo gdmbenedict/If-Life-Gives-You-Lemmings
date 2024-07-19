@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class GameManager : MonoBehaviour
 {
@@ -8,36 +10,30 @@ public class GameManager : MonoBehaviour
     [SerializeField] private TerrainManager terrainManager;
 
     [Header("Rythm Management")]
-    [SerializeField] private int tempo = 120;
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private int tempo;
+    [SerializeField] private RhythmEvent[] rhythmEvents;
     private float secPerBeat;
-    private float timer =0f;
+    private float frequency;
+
 
     // Start is called before the first frame update
     void Start()
     {
-        secPerBeat = 1f / (tempo / 60f);
+        secPerBeat = 60f / tempo;
         terrainManager.SetMoveTime(secPerBeat);
+        frequency = audioSource.clip.frequency;
     }
 
     // Update is called once per frame
     void Update()
     {
-        //update timer
-        timer += Time.deltaTime;
-
-        //call turn
-        if (timer >= secPerBeat*2)
+        //send signals to rhythm based events
+        foreach (RhythmEvent rhythmEvent in rhythmEvents)
         {
-            PlayTurn();
-            timer = 0f;
+            float sampledTime = audioSource.timeSamples / (frequency * rhythmEvent.GetIntervalLength(tempo));
+            UnityEngine.Debug.Log(sampledTime);
+            rhythmEvent.CheckForNewInterval(sampledTime);
         }
-    }
-
-    /// <summary>
-    /// Method that initiates the turn
-    /// </summary>
-    private void PlayTurn()
-    {
-        terrainManager.MoveTrack();
     }
 }
