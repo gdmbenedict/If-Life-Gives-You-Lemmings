@@ -15,6 +15,7 @@ public class TerrainManager : MonoBehaviour
     [SerializeField] private int startPosX = 15;
     private GameObject[] activeTiles;
     private int counter = 0;
+    private float moveTime = 0f;
 
 
 
@@ -42,9 +43,78 @@ public class TerrainManager : MonoBehaviour
     /// <summary>
     /// Method that picks a random tile from the tile variants list
     /// </summary>
-    /// <returns></returns>
+    /// <returns>Random tile from the list of tile variants</returns>
     private GameObject pickRandomTile()
     {
         return tileVariants[UnityEngine.Random.Range(0, tileVariants.Count -1)];
+    }
+
+    /// <summary>
+    /// Method that sets the time required to move track tiles down by 1
+    /// </summary>
+    /// <param name="moveTime">Time required to move </param>
+    public void SetMoveTime(float moveTime)
+    {
+        this.moveTime = moveTime;
+    }
+
+    /// <summary>
+    /// Method that moves the track by one tile
+    /// </summary>
+    public void MoveTrack()
+    {
+        for (int i = 1; i <= trackLength; i++)
+        {
+            GameObject targetTile = activeTiles[trackLength - i];
+
+            //destroy last tile
+            if (i == 1)
+            {
+                Destroy(targetTile);
+            }
+            //move existing tile
+            else
+            {
+                activeTiles[trackLength - i + 1] = targetTile;
+                StartCoroutine(MoveTile(targetTile, targetTile.transform.position, targetTile.transform.position + Vector3.left));
+            }
+        }
+
+        //allocate new tile
+        GameObject newTile;
+
+        //choose tile type
+        if (counter <= 0)
+        {
+            newTile = Instantiate(pickRandomTile(), new Vector3(startPosX + 1, 0, 0), transform.rotation);
+            counter = tileWidth;
+        }
+        else
+        {
+            newTile = Instantiate(emptyTile, new Vector3(startPosX + 1, 0, 0), transform.rotation);
+        }
+
+        //add Tile to list
+        activeTiles[0] = newTile;
+        counter--;
+
+        //move into tile into frame
+        StartCoroutine(MoveTile(newTile, newTile.transform.position, newTile.transform.position + Vector3.left));
+    }
+
+    /// <summary>
+    /// Co-Routine that moves a track tile over a given amount of time
+    /// </summary>
+    /// <param name="target"></param>
+    /// <param name="startPos"></param>
+    /// <param name="endPos"></param>
+    /// <returns></returns>
+    private IEnumerator MoveTile(GameObject target, Vector3 startPos, Vector3 endPos)
+    {
+        for (float t = 0f; t < moveTime; t += Time.deltaTime)
+        {
+            target.transform.position = Vector3.Lerp(startPos, endPos, t/moveTime);
+            yield return null;
+        }
     }
 }
