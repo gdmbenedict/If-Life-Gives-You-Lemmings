@@ -13,15 +13,14 @@ public class GameManager : MonoBehaviour
     [SerializeField] private AudioSource audioSource;
     [SerializeField] private int tempo;
     [SerializeField] private RhythmEvent[] rhythmEvents;
-    private float secPerBeat;
+    private float animTime;
     private float frequency;
 
 
     // Start is called before the first frame update
     void Start()
     {
-        secPerBeat = 60f / tempo;
-        terrainManager.SetMoveTime(secPerBeat);
+        animTime = 60f / tempo;
         frequency = audioSource.clip.frequency;
     }
 
@@ -32,8 +31,13 @@ public class GameManager : MonoBehaviour
         foreach (RhythmEvent rhythmEvent in rhythmEvents)
         {
             float sampledTime = audioSource.timeSamples / (frequency * rhythmEvent.GetIntervalLength(tempo));
-            UnityEngine.Debug.Log(sampledTime);
+            //UnityEngine.Debug.Log(sampledTime);
             rhythmEvent.CheckForNewInterval(sampledTime);
         }
+    }
+
+    public float GetAnimTime()
+    {
+        return animTime;
     }
 }

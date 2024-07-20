@@ -5,6 +5,9 @@ using UnityEngine;
 
 public class TerrainManager : MonoBehaviour
 {
+    //game manager connection
+    private GameManager gameManager;
+
     [Header("Tile Info")]
     [SerializeField] private int tileWidth = 5;
     [SerializeField] private GameObject emptyTile;
@@ -15,10 +18,12 @@ public class TerrainManager : MonoBehaviour
     [SerializeField] private int startPosX = 15;
     private GameObject[] activeTiles;
     private int counter = 0;
-    private float moveTime = 0f;
 
 
-
+    private void Awake()
+    {
+        gameManager = FindObjectOfType<GameManager>();
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -47,15 +52,6 @@ public class TerrainManager : MonoBehaviour
     private GameObject pickRandomTile()
     {
         return tileVariants[UnityEngine.Random.Range(0, tileVariants.Count -1)];
-    }
-
-    /// <summary>
-    /// Method that sets the time required to move track tiles down by 1
-    /// </summary>
-    /// <param name="moveTime">Time required to move </param>
-    public void SetMoveTime(float moveTime)
-    {
-        this.moveTime = moveTime;
     }
 
     /// <summary>
@@ -111,10 +107,15 @@ public class TerrainManager : MonoBehaviour
     /// <returns></returns>
     private IEnumerator MoveTile(GameObject target, Vector3 startPos, Vector3 endPos)
     {
+        float moveTime = gameManager.GetAnimTime();
+
         for (float t = 0f; t < moveTime; t += Time.deltaTime)
         {
             target.transform.position = Vector3.Lerp(startPos, endPos, t/moveTime);
             yield return null;
         }
+
+        //clamp to correct position
+        target.transform.position = endPos;
     }
 }
