@@ -136,7 +136,7 @@ public class PlayerController : MonoBehaviour
         //okay conditions
         if (gotInput && timeSinceInput <= okayTiming && timeSinceInput > greatTiming && recordedDirection != 0 && !autofail)
         {
-            Debug.Log("okay timing: " + timeSinceInput);
+            //Debug.Log("okay timing: " + timeSinceInput);
 
             //add score
             score.Okay();
@@ -148,7 +148,7 @@ public class PlayerController : MonoBehaviour
         //great conditions
         else if (gotInput && timeSinceInput <= greatTiming && timeSinceInput > perfectTiming && !autofail)
         {
-            Debug.Log("great timing: " + timeSinceInput);
+            //Debug.Log("great timing: " + timeSinceInput);
 
             if (recordedDirection == 0)
             {
@@ -165,7 +165,7 @@ public class PlayerController : MonoBehaviour
         //perfect conditions
         else if (gotInput && timeSinceInput < perfectTiming && !autofail)
         {
-            Debug.Log("perfect timing: " + timeSinceInput);
+            //Debug.Log("perfect timing: " + timeSinceInput);
 
             if (recordedDirection == 0)
             {
@@ -183,7 +183,7 @@ public class PlayerController : MonoBehaviour
         else
         {
             score.ResetCombo();
-            Debug.Log("Failed Timing: " + timeSinceInput);
+            //Debug.Log("Failed Timing: " + timeSinceInput);
         }
 
         yield return new WaitForSeconds(perfectTiming);

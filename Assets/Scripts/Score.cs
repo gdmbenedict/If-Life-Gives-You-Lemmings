@@ -38,7 +38,7 @@ public class Score : MonoBehaviour
     private void AddScore(float baseValue)
     {
         score += baseValue * (1 + lemmingModifier*lemmings + combo*comboModifier + 0*speedModifier);
-        Debug.Log("Score:" + score + " combo: x" + combo);
+        //Debug.Log("Score:" + score + " combo: x" + combo);
     }
 
     public void Okay()

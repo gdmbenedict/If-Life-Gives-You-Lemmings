@@ -11,8 +11,10 @@ public class GameManager : MonoBehaviour
     [SerializeField] private AudioSource audioSource;
     [SerializeField] private int tempo;
     [SerializeField] private RhythmEvent[] rhythmEvents;
+
     private float animTime;
     private float frequency;
+    private int lastTrackTime = 0;
 
 
     // Start is called before the first frame update
@@ -25,6 +27,18 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        int trackTime = (int)(audioSource.timeSamples / (frequency));
+        //UnityEngine.Debug.Log(trackTime);
+        if (trackTime == 0 && trackTime != lastTrackTime)
+        {
+            //change speed
+        }
+
+        if (trackTime != lastTrackTime)
+        {
+            lastTrackTime = trackTime;
+        }
+
         //send signals to rhythm based events
         foreach (RhythmEvent rhythmEvent in rhythmEvents)
         {
