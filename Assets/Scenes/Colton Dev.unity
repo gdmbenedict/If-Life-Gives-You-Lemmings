@@ -189,7 +189,7 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 99ad879ad2389e544915c5c8919a8c5d,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -6201,7 +6201,7 @@ ParticleSystem:
       countCurve:
         serializedVersion: 2
         minMaxState: 0
-        scalar: 70
+        scalar: 50
         minScalar: 30
         maxCurve:
           serializedVersion: 2
@@ -10334,7 +10334,7 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: e25fc2e2b1c4ab84c8d9aa6f5916f8ed,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9017072185221178700, guid: e25fc2e2b1c4ab84c8d9aa6f5916f8ed,
         type: 3}
