@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class Score : MonoBehaviour
 {
+    //connections
+    GameManager gameManager;
+
     [Header("Score values")]
     [SerializeField] private float okay = 15f;
     [SerializeField] private float great = 50f;
@@ -22,7 +25,7 @@ public class Score : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
+        gameManager = FindObjectOfType<GameManager>();
     }
 
     // Update is called once per frame
@@ -37,7 +40,7 @@ public class Score : MonoBehaviour
     /// <param name="baseValue"> the base amount of points added</param>
     private void AddScore(float baseValue)
     {
-        score += baseValue * (1 + lemmingModifier*lemmings + combo*comboModifier + 0*speedModifier);
+        score += baseValue * (1 + lemmingModifier*lemmings + combo*comboModifier + gameManager.GetSpeed()*speedModifier);
         //Debug.Log("Score:" + score + " combo: x" + combo);
     }
 
@@ -70,4 +73,5 @@ public class Score : MonoBehaviour
     {
         return score;
     }
+
 }

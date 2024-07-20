@@ -645,10 +645,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 048bd61a72af7554a972a6d1f21fdad1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  perfectTiming: 0.03
-  greatTiming: 0.105
-  okayTiming: 0.225
-  clearDelay: 0.15
+  basePerfectTiming: 0.045
+  baseGreatTiming: 0.105
+  baseOkayTiming: 0.18
+  baseClearDelay: 0.2
   hopHeight: 0.25
 --- !u!114 &1091989089
 MonoBehaviour:
@@ -781,7 +781,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   audioSource: {fileID: 2046530880}
+  audioMixer: {fileID: 24100000, guid: fb888ad40147e0848b632febd8a211bf, type: 2}
   tempo: 115
+  speedIncrement: 0.1
   rhythmEvents:
   - every_X_beats: 2
     triggers:

@@ -13,10 +13,15 @@ public class PlayerController : MonoBehaviour
 
     //timing for input closness.
     [Header("Input Timings")]
-    [SerializeField] private float perfectTiming = 0.045f;
-    [SerializeField] private float greatTiming = 0.105f;
-    [SerializeField] private float okayTiming = 0.180f;
-    [SerializeField] private float clearDelay = 0.1f;
+    [SerializeField] private float basePerfectTiming = 0.045f;
+    [SerializeField] private float baseGreatTiming = 0.105f;
+    [SerializeField] private float baseOkayTiming = 0.180f;
+    [SerializeField] private float baseClearDelay = 0.1f;
+
+    private float perfectTiming;
+    private float greatTiming;
+    private float okayTiming;
+    private float clearDelay;
 
     [Header("Move Animation")]
     [SerializeField] private float hopHeight = 0.25f;
@@ -35,6 +40,8 @@ public class PlayerController : MonoBehaviour
         gameManager = FindObjectOfType<GameManager>();
         terrainManager = FindObjectOfType<TerrainManager>();
         score = FindAnyObjectByType<Score>();
+
+        calcTimings(gameManager.GetSpeed());
     }
 
     // Start is called before the first frame update
@@ -239,5 +246,13 @@ public class PlayerController : MonoBehaviour
 
         //snap to correct value
         transform.localScale = originalScale;
+    }
+
+    public void calcTimings(float speedmodifier)
+    {
+        perfectTiming = basePerfectTiming / speedmodifier;
+        greatTiming = baseGreatTiming / speedmodifier;
+        okayTiming = baseOkayTiming / speedmodifier;
+        clearDelay = baseClearDelay / speedmodifier;
     }
 }
