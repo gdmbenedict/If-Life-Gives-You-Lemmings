@@ -45,6 +45,11 @@ public class TerrainManager : MonoBehaviour
         
     }
 
+    public int GetTileWidth()
+    {
+        return tileWidth;
+    }
+
     /// <summary>
     /// Method that picks a random tile from the tile variants list
     /// </summary>

@@ -8,6 +8,7 @@ public class PlayerController : MonoBehaviour
 {
     //game manager connection
     private GameManager gameManager;
+    private TerrainManager terrainManager;
 
     //timing for input closness.
     [Header("Input Timings")]
@@ -19,14 +20,16 @@ public class PlayerController : MonoBehaviour
     [Header("Move Animation")]
     [SerializeField] private float hopHeight = 0.25f;
 
-    [SerializeField] private bool gotInput;
-    [SerializeField] private bool late;
-    [SerializeField] private float timeSinceInput;
+    private bool gotInput =false;
+    private bool late = false;
+    private bool autofail =false;
+    private float timeSinceInput;
     private float recordedDirection;
 
     private void Awake()
     {
         gameManager = FindObjectOfType<GameManager>();
+        terrainManager = FindObjectOfType<TerrainManager>();
     }
 
     // Start is called before the first frame update
@@ -60,6 +63,20 @@ public class PlayerController : MonoBehaviour
         {
             Debug.Log("Got Input");
             recordedDirection = inputValue.Get<float>();
+
+            //hit left border
+            if (recordedDirection < 0 && transform.position.z >= (terrainManager.GetTileWidth()/2))
+            {
+                Debug.Log("Autofail called " + terrainManager.GetTileWidth() / 2);
+                autofail = true;
+            }
+            //hit right border
+            else if (recordedDirection > 0 && transform.position.z <= -(terrainManager.GetTileWidth()/ 2))
+            {
+                Debug.Log("Autofail called " + + -terrainManager.GetTileWidth() / 2);
+                autofail =true;
+            }
+
             RecordInputTime();
         }
     }
@@ -68,7 +85,7 @@ public class PlayerController : MonoBehaviour
     {
         if (!gotInput)
         {
-            Debug.Log("Got Input");
+            //Debug.Log("Got Input");
             recordedDirection = 0;
             RecordInputTime();
         }
@@ -76,7 +93,7 @@ public class PlayerController : MonoBehaviour
 
     public void MovePlayer()
     {
-        Debug.Log("Move Player Called");
+        //Debug.Log("Move Player Called");
 
         StartCoroutine(Movefunction());
     }
@@ -86,11 +103,12 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     private void ResetMovementParameters()
     {
-        Debug.Log("Resetting parameters");
+        //Debug.Log("Resetting parameters");
 
         recordedDirection = 0;
         gotInput = false;
         late = false;
+        autofail = false;
     }
 
     public void pulse()
@@ -102,7 +120,7 @@ public class PlayerController : MonoBehaviour
     {
         if (!gotInput)
         {
-            Debug.Log("waiting for input");
+            //Debug.Log("waiting for input");
             late = true;
             timeSinceInput = 0f;
             while (!gotInput && timeSinceInput < okayTiming)
@@ -112,14 +130,14 @@ public class PlayerController : MonoBehaviour
         }
 
         //okay conditions
-        if (gotInput && timeSinceInput <= okayTiming && timeSinceInput > greatTiming && recordedDirection != 0)
+        if (gotInput && timeSinceInput <= okayTiming && timeSinceInput > greatTiming && recordedDirection != 0 && !autofail)
         {
             Debug.Log("okay timing: " + timeSinceInput);
 
             StartCoroutine(MoveAnimation(recordedDirection));
         }
         //great conditions
-        else if (gotInput && timeSinceInput <= greatTiming && timeSinceInput > perfectTiming)
+        else if (gotInput && timeSinceInput <= greatTiming && timeSinceInput > perfectTiming && !autofail)
         {
             Debug.Log("great timing: " + timeSinceInput);
 
@@ -131,7 +149,7 @@ public class PlayerController : MonoBehaviour
             StartCoroutine(MoveAnimation(recordedDirection));
         }
         //perfect conditions
-        else if (gotInput && timeSinceInput < perfectTiming)
+        else if (gotInput && timeSinceInput < perfectTiming && !autofail)
         {
             Debug.Log("perfect timing: " + timeSinceInput);
 

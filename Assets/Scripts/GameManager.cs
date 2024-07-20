@@ -6,8 +6,6 @@ using UnityEngine.Events;
 
 public class GameManager : MonoBehaviour
 {
-    [Header("Game Management")]
-    [SerializeField] private TerrainManager terrainManager;
 
     [Header("Rythm Management")]
     [SerializeField] private AudioSource audioSource;
