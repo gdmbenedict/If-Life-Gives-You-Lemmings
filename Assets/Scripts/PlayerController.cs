@@ -6,9 +6,10 @@ using UnityEngine.Rendering;
 
 public class PlayerController : MonoBehaviour
 {
-    //game manager connection
+    //manager connections
     private GameManager gameManager;
     private TerrainManager terrainManager;
+    private Score score;
 
     //timing for input closness.
     [Header("Input Timings")]
@@ -20,6 +21,9 @@ public class PlayerController : MonoBehaviour
     [Header("Move Animation")]
     [SerializeField] private float hopHeight = 0.25f;
 
+    [Header("Lemming Followers")]
+    private List<float> directionRegistry = new List<float>();
+
     private bool gotInput =false;
     private bool late = false;
     private bool autofail =false;
@@ -30,6 +34,7 @@ public class PlayerController : MonoBehaviour
     {
         gameManager = FindObjectOfType<GameManager>();
         terrainManager = FindObjectOfType<TerrainManager>();
+        score = FindAnyObjectByType<Score>();
     }
 
     // Start is called before the first frame update
@@ -94,7 +99,6 @@ public class PlayerController : MonoBehaviour
     public void MovePlayer()
     {
         //Debug.Log("Move Player Called");
-
         StartCoroutine(Movefunction());
     }
 
@@ -134,6 +138,11 @@ public class PlayerController : MonoBehaviour
         {
             Debug.Log("okay timing: " + timeSinceInput);
 
+            //add score
+            score.Okay();
+            score.AddCombo();
+
+            //move animation
             StartCoroutine(MoveAnimation(recordedDirection));
         }
         //great conditions
@@ -146,6 +155,11 @@ public class PlayerController : MonoBehaviour
                 //twirl
             }
 
+            //add score
+            score.Great();
+            score.AddCombo();
+
+            //move animation
             StartCoroutine(MoveAnimation(recordedDirection));
         }
         //perfect conditions
@@ -158,11 +172,17 @@ public class PlayerController : MonoBehaviour
                 //twirl
             }
 
+            //add score
+            score.Perfect();
+            score.AddCombo();
+
+            //move animation
             StartCoroutine(MoveAnimation(recordedDirection));
         }
         //fail conditions
         else
         {
+            score.ResetCombo();
             Debug.Log("Failed Timing: " + timeSinceInput);
         }
 

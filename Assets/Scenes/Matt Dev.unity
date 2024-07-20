@@ -348,6 +348,56 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 88305239}
   m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &329489659
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 329489661}
+  - component: {fileID: 329489660}
+  m_Layer: 0
+  m_Name: ScoreManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &329489660
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 329489659}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b386b827c2415f48b3b6c12d26ec7b5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  okay: 15
+  great: 50
+  perfect: 100
+  lemmingModifier: 1
+  speedModifier: 1
+  comboModifier: 0.01
+--- !u!4 &329489661
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 329489659}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 10.33587, y: -8.861881, z: 6.6692314}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &376763201
 GameObject:
   m_ObjectHideFlags: 0
@@ -600,9 +650,6 @@ MonoBehaviour:
   okayTiming: 0.225
   clearDelay: 0.15
   hopHeight: 0.25
-  gotInput: 0
-  late: 0
-  timeSinceInput: 0
 --- !u!114 &1091989089
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -733,7 +780,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 357b50aa97d1b6a48938b192062e5437, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  terrainManager: {fileID: 1803934499}
   audioSource: {fileID: 2046530880}
   tempo: 115
   rhythmEvents:
@@ -915,3 +961,4 @@ SceneRoots:
   - {fileID: 2017701114}
   - {fileID: 376763204}
   - {fileID: 2046530881}
+  - {fileID: 329489661}
