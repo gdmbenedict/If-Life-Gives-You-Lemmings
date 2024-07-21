@@ -111,7 +111,6 @@ public class PlayerController : MonoBehaviour
     private void ResetMovementParameters()
     {
         //Debug.Log("Resetting parameters");
-        lemmingManager.LogDirection(recordedDirection);
 
         recordedDirection = 0;
         gotInput = false;
@@ -182,7 +181,7 @@ public class PlayerController : MonoBehaviour
 
             //move animation
             StartCoroutine(lemmingComponent.MoveAnimation(recordedDirection));
-            lemmingManager.moveLemmings();
+            
         }
         //fail conditions
         else
@@ -192,6 +191,8 @@ public class PlayerController : MonoBehaviour
             //Debug.Log("Failed Timing: " + timeSinceInput);
         }
 
+        lemmingManager.LogDirection(recordedDirection);
+        lemmingManager.moveLemmings();
         Invoke("ResetMovementParameters", clearDelay);
     }
     

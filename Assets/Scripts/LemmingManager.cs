@@ -6,8 +6,8 @@ using UnityEngine.Pool;
 public class LemmingManager : MonoBehaviour
 {
 
-    [SerializeField] List<Lemming> lemmings;
-    [SerializeField] private List<float> directionRegistry;
+    private List<Lemming> lemmings;
+    private List<float> directionRegistry;
 
     private bool leaderDead = false;
 
@@ -54,7 +54,7 @@ public class LemmingManager : MonoBehaviour
     {
         for (int i =0; i<lemmings.Count; i++)
         {
-            StartCoroutine(lemmings[i].MoveAnimation(directionRegistry[lemmings.Count-i]));
+            StartCoroutine(lemmings[i].MoveAnimation(directionRegistry[lemmings.Count-i-1]));
         }
     }
 
