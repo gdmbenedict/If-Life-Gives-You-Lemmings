@@ -111,6 +111,7 @@ public class PlayerController : MonoBehaviour
     private void ResetMovementParameters()
     {
         //Debug.Log("Resetting parameters");
+        lemmingManager.LogDirection(recordedDirection);
 
         recordedDirection = 0;
         gotInput = false;
@@ -190,8 +191,6 @@ public class PlayerController : MonoBehaviour
             recordedDirection = 0;
             //Debug.Log("Failed Timing: " + timeSinceInput);
         }
-
-        lemmingManager.LogDirection(recordedDirection);
 
         Invoke("ResetMovementParameters", clearDelay);
     }

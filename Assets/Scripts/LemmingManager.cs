@@ -6,8 +6,8 @@ using UnityEngine.Pool;
 public class LemmingManager : MonoBehaviour
 {
 
-    List<Lemming> lemmings;
-    List<float> directionRegistry;
+    [SerializeField] List<Lemming> lemmings;
+    [SerializeField] private List<float> directionRegistry;
 
     private bool leaderDead = false;
 
@@ -30,12 +30,16 @@ public class LemmingManager : MonoBehaviour
     /// <param name="direction"></param>
     public void LogDirection(float direction)
     {
+        Debug.Log("Logging Direction");
+
         //add newest direction to registry
-        directionRegistry.Add(-direction);
+        directionRegistry.Add(direction);
 
         //checks to see if registry is at least 1 larger than lemmings count
-        if (!(directionRegistry.Count <= lemmings.Count))
+        if (directionRegistry.Count > lemmings.Count + 1)
         {
+            Debug.Log("Removing oldest log");
+            Debug.Log(lemmings.Count);
             //remove oldest direction in registry
             directionRegistry.Remove(directionRegistry[0]);
         }
@@ -50,7 +54,7 @@ public class LemmingManager : MonoBehaviour
     {
         for (int i =0; i<lemmings.Count; i++)
         {
-            StartCoroutine(lemmings[i].MoveAnimation(directionRegistry[lemmings.Count-i-1]));
+            StartCoroutine(lemmings[i].MoveAnimation(directionRegistry[lemmings.Count-i]));
         }
     }
 
@@ -65,7 +69,7 @@ public class LemmingManager : MonoBehaviour
         float posZ = currentPosZ;
         foreach (float direction in directionRegistry)
         {
-            posZ -= direction;
+            posZ += direction;
         }
 
         targetLemming.gameObject.transform.position = new Vector3(-lemmings.Count, 0, posZ);

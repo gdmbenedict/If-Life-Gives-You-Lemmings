@@ -21,11 +21,11 @@ public class AddToLemmings : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("Trigger Activated");
+        //Debug.Log("Trigger Activated");
 
         if (other.transform.parent.GetComponent<PlayerController>())
         {
-            Debug.Log("Player Detected");
+            //Debug.Log("Player Detected");
             lemmingManager.addLemming(lemmingComponent, gameObject.transform.parent.position.z);
         }
     }

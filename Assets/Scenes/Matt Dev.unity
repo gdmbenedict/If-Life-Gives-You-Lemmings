@@ -656,6 +656,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 945e4a2031c23dc41a62a1197f7d2dd1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lemmings: []
+  directionRegistry: []
 --- !u!4 &1358823413
 Transform:
   m_ObjectHideFlags: 0
@@ -869,7 +871,7 @@ MonoBehaviour:
   audioSource: {fileID: 2046530880}
   audioMixer: {fileID: 24100000, guid: fb888ad40147e0848b632febd8a211bf, type: 2}
   tempo: 115
-  speedIncrement: 0.1
+  speedIncrement: 0
   rhythmEvents:
   - every_X_beats: 2
     triggers:
