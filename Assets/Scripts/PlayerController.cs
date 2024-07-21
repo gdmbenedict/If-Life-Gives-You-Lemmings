@@ -20,6 +20,11 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float baseOkayTiming = 0.180f;
     [SerializeField] private float baseClearDelay = 0.1f;
 
+    [Header("SFX")]
+    [SerializeField] private AudioSource playerSFX;
+    [SerializeField] private AudioClip failClip;
+    [SerializeField] private AudioClip succeedClip;
+
     private float perfectTiming;
     private float greatTiming;
     private float okayTiming;
@@ -143,6 +148,8 @@ public class PlayerController : MonoBehaviour
                 }
             }
 
+            playerSFX.clip = succeedClip;
+
             //okay conditions
             if (gotInput && timeSinceInput <= okayTiming && timeSinceInput > greatTiming && recordedDirection != 0 && !autofail)
             {
@@ -196,7 +203,11 @@ public class PlayerController : MonoBehaviour
                 score.ResetCombo();
                 recordedDirection = 0;
                 //Debug.Log("Failed Timing: " + timeSinceInput);
+
+                playerSFX.clip = failClip;
             }
+
+            playerSFX.Play();
         }
 
         lemmingManager.LogDirection(recordedDirection);
@@ -233,9 +244,10 @@ public class PlayerController : MonoBehaviour
     {
         isDead = true;
 
-        //disable visualization
-        GetComponentInChildren<MeshRenderer>().enabled = false;
+        //disable player
         GetComponent<PlayerInput>().enabled = false;
         terrainManager.DisableMovement();
+
+        FindObjectOfType<ProgramManager>().OpenMenu("endScreen");
     }
 }

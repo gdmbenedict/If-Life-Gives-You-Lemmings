@@ -48,10 +48,10 @@ public class Lemming : MonoBehaviour
         mist.Play();
         audioSource.clip = deathAudioClip;
         audioSource.Play();
+        visuals.SetActive(false);
 
         if (!leader)
         {
-            visuals.SetActive(false);
             Destroy(gameObject, gameManager.GetAnimTime());
         }
         else

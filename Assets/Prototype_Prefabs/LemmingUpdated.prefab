@@ -181,7 +181,7 @@ MonoBehaviour:
   chuncks: {fileID: 3858570567486765720}
   mist: {fileID: 7801303161564403166}
   audioSource: {fileID: 6040941574804439223}
-  deathAudioClip: {fileID: 0}
+  deathAudioClip: {fileID: 8300000, guid: ebbf1589731adfd49ba3f79825054c08, type: 3}
   hopHeight: 0.25
 --- !u!1 &5384641751962205354
 GameObject:
