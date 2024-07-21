@@ -69,19 +69,19 @@ public class PlayerController : MonoBehaviour
     {
         if (!gotInput)
         {
-            Debug.Log("Got Input");
+            //Debug.Log("Got Input");
             recordedDirection = inputValue.Get<float>();
 
             //hit left border
             if (recordedDirection < 0 && transform.position.z >= (terrainManager.GetTileWidth()/2))
             {
-                Debug.Log("Autofail called " + terrainManager.GetTileWidth() / 2);
+                //Debug.Log("Autofail called " + terrainManager.GetTileWidth() / 2);
                 autofail = true;
             }
             //hit right border
             else if (recordedDirection > 0 && transform.position.z <= -(terrainManager.GetTileWidth()/ 2))
             {
-                Debug.Log("Autofail called " + + -terrainManager.GetTileWidth() / 2);
+                //Debug.Log("Autofail called " + + -terrainManager.GetTileWidth() / 2);
                 autofail =true;
             }
 

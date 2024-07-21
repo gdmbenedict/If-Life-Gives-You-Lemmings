@@ -31,7 +31,7 @@ public class LemmingManager : MonoBehaviour
     public void LogDirection(float direction)
     {
         //add newest direction to registry
-        directionRegistry.Add(direction);
+        directionRegistry.Add(-direction);
 
         //checks to see if registry is at least 1 larger than lemmings count
         if (!(directionRegistry.Count <= lemmings.Count))
@@ -69,6 +69,7 @@ public class LemmingManager : MonoBehaviour
         }
 
         targetLemming.gameObject.transform.position = new Vector3(-lemmings.Count, 0, posZ);
+        targetLemming.gameObject.transform.parent = gameObject.transform;
     }
 
     public void removeLemming(Lemming targetLemming)
