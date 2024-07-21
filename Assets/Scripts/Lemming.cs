@@ -8,6 +8,14 @@ public class Lemming : MonoBehaviour
     //connections
     GameManager gameManager;
 
+    [Header("Visuals")]
+    [SerializeField] private GameObject visuals;
+    [SerializeField] private ParticleSystem chuncks;
+    [SerializeField] private ParticleSystem mist;
+
+    [Header("SFX")]
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioClip deathAudioClip;
 
     [Header("Move Animation")]
     [SerializeField] private float hopHeight = 0.25f;
@@ -36,11 +44,14 @@ public class Lemming : MonoBehaviour
 
     public void killLeming()
     {
-        //death FX
+        chuncks.Play();
+        mist.Play();
+        audioSource.clip = deathAudioClip;
+        audioSource.Play();
 
         if (!leader)
         {
-            gameObject.GetComponentInChildren<MeshRenderer>().enabled = false;
+            visuals.SetActive(false);
             Destroy(gameObject, gameManager.GetAnimTime());
         }
         else
