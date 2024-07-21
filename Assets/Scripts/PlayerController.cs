@@ -10,6 +10,8 @@ public class PlayerController : MonoBehaviour
     private GameManager gameManager;
     private TerrainManager terrainManager;
     private Score score;
+    private LemmingManager lemmingManager;
+    [SerializeField] private Lemming lemmingComponent;
 
     //timing for input closness.
     [Header("Input Timings")]
@@ -23,12 +25,6 @@ public class PlayerController : MonoBehaviour
     private float okayTiming;
     private float clearDelay;
 
-    [Header("Move Animation")]
-    [SerializeField] private float hopHeight = 0.25f;
-
-    [Header("Lemming Followers")]
-    private List<float> directionRegistry = new List<float>();
-
     private bool gotInput =false;
     private bool late = false;
     private bool autofail =false;
@@ -40,6 +36,7 @@ public class PlayerController : MonoBehaviour
         gameManager = FindObjectOfType<GameManager>();
         terrainManager = FindObjectOfType<TerrainManager>();
         score = FindAnyObjectByType<Score>();
+        lemmingManager = FindObjectOfType<LemmingManager>();
 
         calcTimings(gameManager.GetSpeed());
     }
@@ -47,7 +44,6 @@ public class PlayerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
     }
 
     // Update is called once per frame
@@ -73,19 +69,19 @@ public class PlayerController : MonoBehaviour
     {
         if (!gotInput)
         {
-            Debug.Log("Got Input");
+            //Debug.Log("Got Input");
             recordedDirection = inputValue.Get<float>();
 
             //hit left border
             if (recordedDirection < 0 && transform.position.z >= (terrainManager.GetTileWidth()/2))
             {
-                Debug.Log("Autofail called " + terrainManager.GetTileWidth() / 2);
+                //Debug.Log("Autofail called " + terrainManager.GetTileWidth() / 2);
                 autofail = true;
             }
             //hit right border
             else if (recordedDirection > 0 && transform.position.z <= -(terrainManager.GetTileWidth()/ 2))
             {
-                Debug.Log("Autofail called " + + -terrainManager.GetTileWidth() / 2);
+                //Debug.Log("Autofail called " + + -terrainManager.GetTileWidth() / 2);
                 autofail =true;
             }
 
@@ -150,7 +146,7 @@ public class PlayerController : MonoBehaviour
             score.AddCombo();
 
             //move animation
-            StartCoroutine(MoveAnimation(recordedDirection));
+            StartCoroutine(lemmingComponent.MoveAnimation(recordedDirection));
         }
         //great conditions
         else if (gotInput && timeSinceInput <= greatTiming && timeSinceInput > perfectTiming && !autofail)
@@ -167,7 +163,7 @@ public class PlayerController : MonoBehaviour
             score.AddCombo();
 
             //move animation
-            StartCoroutine(MoveAnimation(recordedDirection));
+            StartCoroutine(lemmingComponent.MoveAnimation(recordedDirection));
         }
         //perfect conditions
         else if (gotInput && timeSinceInput < perfectTiming && !autofail)
@@ -184,51 +180,20 @@ public class PlayerController : MonoBehaviour
             score.AddCombo();
 
             //move animation
-            StartCoroutine(MoveAnimation(recordedDirection));
+            StartCoroutine(lemmingComponent.MoveAnimation(recordedDirection));
+            
         }
         //fail conditions
         else
         {
             score.ResetCombo();
+            recordedDirection = 0;
             //Debug.Log("Failed Timing: " + timeSinceInput);
         }
 
-        yield return new WaitForSeconds(perfectTiming);
+        lemmingManager.LogDirection(recordedDirection);
+        lemmingManager.moveLemmings();
         Invoke("ResetMovementParameters", clearDelay);
-    }
-
-    private IEnumerator MoveAnimation(float direction)
-    {
-        //get animation time
-        float animTime = gameManager.GetAnimTime();
-        StartCoroutine(HopAnim(animTime));
-
-        //initial parameters
-        float startPos = transform.position.z;
-        float endPos = transform.position.z - direction;
-
-        for(float t =0f; t< animTime; t += Time.deltaTime)
-        {
-            float newPos = Mathf.Lerp(startPos, endPos, t / animTime);
-            transform.position = new Vector3(transform.position.x, transform.position.y, newPos);
-            yield return null;
-        }
-
-        //clamp to correct position
-        transform.position = new Vector3(transform.position.x, transform.position.y, endPos);
-    }
-
-    private IEnumerator HopAnim(float animTime)
-    {
-        for (float t=0f; t<animTime; t+= Time.deltaTime)
-        {
-            float positionY = Mathf.Sin(Mathf.PI * t / animTime) * hopHeight;
-            transform.position = new Vector3(transform.position.x, positionY, transform.position.z);
-            yield return null;
-        }
-
-        //clamp to correct position
-        transform.position = new Vector3(transform.position.x, 0f, transform.position.z);
     }
     
     private IEnumerator popAnim()

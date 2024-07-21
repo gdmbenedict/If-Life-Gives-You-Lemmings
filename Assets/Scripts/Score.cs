@@ -6,6 +6,7 @@ public class Score : MonoBehaviour
 {
     //connections
     GameManager gameManager;
+    LemmingManager lemmingManager;
 
     [Header("Score values")]
     [SerializeField] private float okay = 15f;
@@ -18,7 +19,6 @@ public class Score : MonoBehaviour
     [SerializeField] private float comboModifier = 0.01f;
 
     private float score = 0;
-    private int lemmings = 0;
     private int combo = 0;
    
 
@@ -26,6 +26,7 @@ public class Score : MonoBehaviour
     void Start()
     {
         gameManager = FindObjectOfType<GameManager>();
+        lemmingManager = FindObjectOfType<LemmingManager>();
     }
 
     // Update is called once per frame
@@ -40,7 +41,7 @@ public class Score : MonoBehaviour
     /// <param name="baseValue"> the base amount of points added</param>
     private void AddScore(float baseValue)
     {
-        score += baseValue * (1 + lemmingModifier*lemmings + combo*comboModifier + gameManager.GetSpeed()*speedModifier);
+        score += baseValue * (1 + lemmingModifier*lemmingManager.GetLemmings() + combo*comboModifier + gameManager.GetSpeed()*speedModifier);
         //Debug.Log("Score:" + score + " combo: x" + combo);
     }
 
