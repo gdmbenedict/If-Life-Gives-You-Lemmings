@@ -225,6 +225,8 @@ public class ProgramManager : MonoBehaviour
 
     public void ChangeScene(string sceneName)
     {
+        endScreen.SetActive(false);
+
         SceneManager.LoadScene(sceneName);
 
         if (sceneName == mainMenuScene)
