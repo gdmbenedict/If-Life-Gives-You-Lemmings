@@ -71,7 +71,7 @@ public class PlayerController : MonoBehaviour
     {
         if (!gotInput)
         {
-            //Debug.Log("Got Input");
+            Debug.Log("Got Input");
             recordedDirection = inputValue.Get<float>();
 
             //hit left border
@@ -83,7 +83,7 @@ public class PlayerController : MonoBehaviour
             //hit right border
             else if (recordedDirection > 0 && transform.position.z <= -(terrainManager.GetTileWidth()/ 2))
             {
-                //Debug.Log("Autofail called " + + -terrainManager.GetTileWidth() / 2);
+                Debug.Log("Autofail called " + + -terrainManager.GetTileWidth() / 2);
                 autofail =true;
             }
 
@@ -143,7 +143,7 @@ public class PlayerController : MonoBehaviour
             //okay conditions
             if (gotInput && timeSinceInput <= okayTiming && timeSinceInput > greatTiming && recordedDirection != 0 && !autofail)
             {
-                //Debug.Log("okay timing: " + timeSinceInput);
+                Debug.Log("okay timing: " + timeSinceInput);
 
                 //add score
                 score.Okay();
@@ -155,7 +155,7 @@ public class PlayerController : MonoBehaviour
             //great conditions
             else if (gotInput && timeSinceInput <= greatTiming && timeSinceInput > perfectTiming && !autofail)
             {
-                //Debug.Log("great timing: " + timeSinceInput);
+                Debug.Log("great timing: " + timeSinceInput);
 
                 if (recordedDirection == 0)
                 {
@@ -172,7 +172,7 @@ public class PlayerController : MonoBehaviour
             //perfect conditions
             else if (gotInput && timeSinceInput < perfectTiming && !autofail)
             {
-                //Debug.Log("perfect timing: " + timeSinceInput);
+                Debug.Log("perfect timing: " + timeSinceInput);
 
                 if (recordedDirection == 0)
                 {
