@@ -1,9 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
+using Unity.VisualScripting;
 using UnityEditor.SearchService;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class ProgramManager : MonoBehaviour
 {
@@ -28,6 +31,10 @@ public class ProgramManager : MonoBehaviour
     private GameState gameState;
     private UIState uiState;
 
+    //object connections
+    private GameManager gameManager;
+    private Score score;
+
     //references
     [Header("UI Objects")]
     [SerializeField] private GameObject mainMenu;
@@ -37,6 +44,18 @@ public class ProgramManager : MonoBehaviour
     [SerializeField] private GameObject endScreen;
     [SerializeField] private GameObject controlsMenu;
     [SerializeField] private GameObject gameplayUI;
+
+    [Header("UI Elements")]
+    [SerializeField] private TextMeshProUGUI scoreText;
+    [SerializeField] private TextMeshProUGUI scoreDisplay;
+    [SerializeField] private TextMeshProUGUI multDisplay;
+    [SerializeField] private Image image3;
+    [SerializeField] private Image image2;
+    [SerializeField] private Image image1;
+    [SerializeField] private Image imageGo;
+    [SerializeField] private Image perfectImage;
+    [SerializeField] private Image greatImage;
+    [SerializeField] private Image okayImage;
 
     //Scenes
     [Header("Scenes")]
@@ -50,6 +69,11 @@ public class ProgramManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        image1.enabled = false;
+        image2.enabled = false;
+        image3.enabled = false;
+        imageGo.enabled = false;
+
         mainMenu.SetActive(true);
         menuMusic.Play();
     }
@@ -58,6 +82,90 @@ public class ProgramManager : MonoBehaviour
     void Update()
     {
         
+    }
+
+    public void UpdateScoreAndMult(float score, float mult)
+    {
+        if (gameState == GameState.gamePlay && gameManager != null)
+        {
+            scoreDisplay.text = "Score: " + score.ToString("F0");
+            multDisplay.text = "Multipler: " + mult.ToString("F2");
+        }
+    }
+
+    public IEnumerator StartSequence(GameManager gameManager)
+    {
+        this.gameManager = gameManager;
+        float animTime = gameManager.GetAnimTime()*2;
+
+        image3.enabled = true;
+        for (float t=0; t<= animTime; t+= Time.deltaTime)
+        {
+            image3.color = new Color(1, 1, 1, t/animTime);
+            yield return null;
+        }
+        image3.enabled = false;
+
+        image2.enabled = true;
+        for (float t = 0; t <= animTime; t += Time.deltaTime)
+        {
+            image2.color = new Color(1, 1, 1, t / animTime);
+            yield return null;
+        }
+        image2.enabled = false;
+
+        image1.enabled = true;
+        for (float t = 0; t <= animTime; t += Time.deltaTime)
+        {
+            image1.color = new Color(1, 1, 1, t / animTime);
+            yield return null;
+        }
+        image1.enabled = false;
+
+        imageGo.enabled = true;
+        gameManager.StartGame();
+        for (float t = 0; t <= animTime; t += Time.deltaTime)
+        {
+            imageGo.color = new Color(1, 1, 1, t / animTime);
+            yield return null;
+        }
+        imageGo.enabled = false;   
+    }
+
+    public IEnumerator Perfect()
+    {
+        float animTime = gameManager.GetAnimTime();
+        perfectImage.enabled = true;
+        for (float t = 0; t <= animTime; t += Time.deltaTime)
+        {
+            perfectImage.color = new Color(1, 1, 1, t / animTime);
+            yield return null;
+        }
+        perfectImage.enabled = false;
+    }
+
+    public IEnumerator Great()
+    {
+        float animTime = gameManager.GetAnimTime();
+        greatImage.enabled = true;
+        for (float t = 0; t <= animTime; t += Time.deltaTime)
+        {
+            greatImage.color = new Color(1, 1, 1, t / animTime);
+            yield return null;
+        }
+        greatImage.enabled = false;
+    }
+
+    public IEnumerator Okay()
+    {
+        float animTime = gameManager.GetAnimTime();
+        okayImage.enabled = true;
+        for (float t = 0; t <= animTime; t += Time.deltaTime)
+        {
+            okayImage.color = new Color(1, 1, 1, t / animTime);
+            yield return null;
+        }
+        okayImage.enabled = false;
     }
 
     public void OnPause(InputValue inputValue)
@@ -191,6 +299,8 @@ public class ProgramManager : MonoBehaviour
                 break;
 
             case "endScreen":
+
+                scoreText.text = "Score: " + FindObjectOfType<Score>().GetScore();
 
                 gameplayUI.SetActive(false);
                 endScreen.SetActive(true);

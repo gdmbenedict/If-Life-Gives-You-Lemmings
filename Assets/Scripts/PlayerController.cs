@@ -11,6 +11,7 @@ public class PlayerController : MonoBehaviour
     private TerrainManager terrainManager;
     private Score score;
     private LemmingManager lemmingManager;
+    private ProgramManager programManager;
     [SerializeField] private Lemming lemmingComponent;
 
     //timing for input closness.
@@ -40,6 +41,7 @@ public class PlayerController : MonoBehaviour
 
     private void Awake()
     {
+        programManager = FindObjectOfType<ProgramManager>();
         gameManager = FindObjectOfType<GameManager>();
         terrainManager = FindObjectOfType<TerrainManager>();
         score = FindAnyObjectByType<Score>();
@@ -158,6 +160,7 @@ public class PlayerController : MonoBehaviour
                 //add score
                 score.Okay();
                 score.AddCombo();
+                StartCoroutine(programManager.Okay());
 
                 //move animation
                 StartCoroutine(lemmingComponent.MoveAnimation(recordedDirection));
@@ -175,6 +178,7 @@ public class PlayerController : MonoBehaviour
                 //add score
                 score.Great();
                 score.AddCombo();
+                StartCoroutine(programManager.Great());
 
                 //move animation
                 StartCoroutine(lemmingComponent.MoveAnimation(recordedDirection));
@@ -192,6 +196,7 @@ public class PlayerController : MonoBehaviour
                 //add score
                 score.Perfect();
                 score.AddCombo();
+                StartCoroutine(programManager.Perfect());
 
                 //move animation
                 StartCoroutine(lemmingComponent.MoveAnimation(recordedDirection));

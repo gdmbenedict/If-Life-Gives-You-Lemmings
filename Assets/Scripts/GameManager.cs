@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour
 {
     //connections
     private PlayerController playerController;
+    private ProgramManager programManager;
 
     [Header("Rythm Management")]
     [SerializeField] private AudioSource audioSource;
@@ -26,6 +27,7 @@ public class GameManager : MonoBehaviour
     private void Awake()
     {
         playerController = FindObjectOfType<PlayerController>();
+        programManager = FindObjectOfType<ProgramManager>();
     }
 
     // Start is called before the first frame update
@@ -33,6 +35,7 @@ public class GameManager : MonoBehaviour
     {
         CalcAnimTime();
         frequency = audioSource.clip.frequency;
+        StartCoroutine(programManager.StartSequence(gameObject.GetComponent<GameManager>()));
     }
 
     // Update is called once per frame
@@ -71,6 +74,11 @@ public class GameManager : MonoBehaviour
             //UnityEngine.Debug.Log(sampledTime);
             rhythmEvent.CheckForNewInterval(sampledTime);
         }
+    }
+
+    public void StartGame()
+    {
+        audioSource.Play();
     }
 
     public float GetAnimTime()
