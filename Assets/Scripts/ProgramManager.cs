@@ -241,6 +241,7 @@ public class ProgramManager : MonoBehaviour
             uiState = UIState.mainMenu;
 
             SceneManager.LoadScene(mainMenuScene);
+            menuMusic.Play();
         }
         else
         {
@@ -250,6 +251,7 @@ public class ProgramManager : MonoBehaviour
             gameplayUI.SetActive(true);
 
             SceneManager.LoadScene(gameplayScene);
+            menuMusic.Stop();
         }
     }
 }
