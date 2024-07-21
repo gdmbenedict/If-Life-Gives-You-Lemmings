@@ -57,14 +57,17 @@ public class PlayerController : MonoBehaviour
 
     private void RecordInputTime()
     {
-        //record that input was taken and reset timer
-        gotInput = true;
-
-        if (!late)
+        if (Time.timeScale != 0)
         {
-            //Debug.Log("Resseting time since input");
-            timeSinceInput = 0f;
-        }   
+            //record that input was taken and reset timer
+            gotInput = true;
+
+            if (!late)
+            {
+                //Debug.Log("Resseting time since input");
+                timeSinceInput = 0f;
+            }
+        }     
     }
 
     public void OnMovement(InputValue inputValue)

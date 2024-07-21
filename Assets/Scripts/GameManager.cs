@@ -87,4 +87,18 @@ public class GameManager : MonoBehaviour
     {
         return speed;
     }
+
+    public void TogglePause()
+    {
+        if (Time.timeScale == 0)
+        {
+            Time.timeScale = 1;
+            audioSource.UnPause();
+        }
+        else
+        {
+            Time.timeScale = 0;
+            audioSource.Pause();
+        }
+    }
 }
