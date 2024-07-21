@@ -18,7 +18,7 @@ public class TerrainManager : MonoBehaviour
     [SerializeField] private int startPosX = 15;
     private GameObject[] activeTiles;
     private int counter = 0;
-
+    bool movementDisabled = false;
 
     private void Awake()
     {
@@ -64,43 +64,46 @@ public class TerrainManager : MonoBehaviour
     /// </summary>
     public void MoveTrack()
     {
-        for (int i = 1; i <= trackLength; i++)
+        if (!movementDisabled)
         {
-            GameObject targetTile = activeTiles[trackLength - i];
-
-            //destroy last tile
-            if (i == 1)
+            for (int i = 1; i <= trackLength; i++)
             {
-                Destroy(targetTile);
+                GameObject targetTile = activeTiles[trackLength - i];
+
+                //destroy last tile
+                if (i == 1)
+                {
+                    Destroy(targetTile);
+                }
+                //move existing tile
+                else
+                {
+                    activeTiles[trackLength - i + 1] = targetTile;
+                    StartCoroutine(MoveTile(targetTile, targetTile.transform.position, targetTile.transform.position + Vector3.left));
+                }
             }
-            //move existing tile
+
+            //allocate new tile
+            GameObject newTile;
+
+            //choose tile type
+            if (counter <= 0)
+            {
+                newTile = Instantiate(pickRandomTile(), new Vector3(startPosX + 1, 0, 0), transform.rotation);
+                counter = tileWidth;
+            }
             else
             {
-                activeTiles[trackLength - i + 1] = targetTile;
-                StartCoroutine(MoveTile(targetTile, targetTile.transform.position, targetTile.transform.position + Vector3.left));
+                newTile = Instantiate(emptyTile, new Vector3(startPosX + 1, 0, 0), transform.rotation);
             }
-        }
 
-        //allocate new tile
-        GameObject newTile;
+            //add Tile to list
+            activeTiles[0] = newTile;
+            counter--;
 
-        //choose tile type
-        if (counter <= 0)
-        {
-            newTile = Instantiate(pickRandomTile(), new Vector3(startPosX + 1, 0, 0), transform.rotation);
-            counter = tileWidth;
-        }
-        else
-        {
-            newTile = Instantiate(emptyTile, new Vector3(startPosX + 1, 0, 0), transform.rotation);
-        }
-
-        //add Tile to list
-        activeTiles[0] = newTile;
-        counter--;
-
-        //move into tile into frame
-        StartCoroutine(MoveTile(newTile, newTile.transform.position, newTile.transform.position + Vector3.left));
+            //move into tile into frame
+            StartCoroutine(MoveTile(newTile, newTile.transform.position, newTile.transform.position + Vector3.left));
+        }    
     }
 
     /// <summary>
@@ -122,5 +125,10 @@ public class TerrainManager : MonoBehaviour
 
         //clamp to correct position
         target.transform.position = endPos;
+    }
+
+    public void DisableMovement()
+    {
+        movementDisabled = true;
     }
 }

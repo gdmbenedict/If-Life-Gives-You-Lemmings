@@ -12,6 +12,8 @@ public class Lemming : MonoBehaviour
     [Header("Move Animation")]
     [SerializeField] private float hopHeight = 0.25f;
 
+    bool leader;
+
     private void Awake()
     {
         gameManager = FindObjectOfType<GameManager>();
@@ -20,7 +22,10 @@ public class Lemming : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        if (gameObject.GetComponent<PlayerController>())
+        {
+            leader = true;
+        }
     }
 
     // Update is called once per frame
@@ -33,7 +38,16 @@ public class Lemming : MonoBehaviour
     {
         //death FX
 
-        Destroy(gameObject);
+        if (!leader)
+        {
+            gameObject.GetComponentInChildren<MeshRenderer>().enabled = false;
+            Destroy(gameObject, gameManager.GetAnimTime());
+        }
+        else
+        {
+            gameObject.GetComponent<PlayerController>().killPlayer();
+        }
+        
     }
 
     public IEnumerator MoveAnimation(float direction)
@@ -70,7 +84,7 @@ public class Lemming : MonoBehaviour
         transform.position = new Vector3(transform.position.x, 0f, transform.position.z);
     }
 
-    private IEnumerator MoveForward()
+    public IEnumerator MoveForward()
     {
         float moveTime = gameManager.GetAnimTime();
         float startX = gameObject.transform.position.x;

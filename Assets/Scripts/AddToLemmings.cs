@@ -5,6 +5,7 @@ using UnityEngine;
 public class AddToLemmings : MonoBehaviour
 {
     [SerializeField] private Lemming lemmingComponent;
+    [SerializeField] private Collider collider;
     private LemmingManager lemmingManager;
 
     // Start is called before the first frame update
@@ -27,6 +28,7 @@ public class AddToLemmings : MonoBehaviour
         {
             //Debug.Log("Player Detected");
             lemmingManager.addLemming(lemmingComponent, gameObject.transform.parent.position.z);
+            collider.isTrigger = false;
         }
     }
 }

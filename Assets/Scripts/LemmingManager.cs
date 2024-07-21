@@ -9,6 +9,8 @@ public class LemmingManager : MonoBehaviour
     private List<Lemming> lemmings;
     private List<float> directionRegistry;
 
+    [SerializeField] GameObject player;
+
     private bool leaderDead = false;
 
     // Start is called before the first frame update
@@ -30,7 +32,7 @@ public class LemmingManager : MonoBehaviour
     /// <param name="direction"></param>
     public void LogDirection(float direction)
     {
-        Debug.Log("Logging Direction");
+        //Debug.Log("Logging Direction");
 
         //add newest direction to registry
         directionRegistry.Add(direction);
@@ -38,8 +40,8 @@ public class LemmingManager : MonoBehaviour
         //checks to see if registry is at least 1 larger than lemmings count
         if (directionRegistry.Count > lemmings.Count + 1)
         {
-            Debug.Log("Removing oldest log");
-            Debug.Log(lemmings.Count);
+            //Debug.Log("Removing oldest log");
+            //Debug.Log(lemmings.Count);
             //remove oldest direction in registry
             directionRegistry.Remove(directionRegistry[0]);
         }
@@ -55,6 +57,11 @@ public class LemmingManager : MonoBehaviour
         for (int i =0; i<lemmings.Count; i++)
         {
             StartCoroutine(lemmings[i].MoveAnimation(directionRegistry[lemmings.Count-i-1]));
+
+            if (leaderDead)
+            {
+                StartCoroutine(lemmings[i].MoveForward());
+            }
         }
     }
 
@@ -78,6 +85,13 @@ public class LemmingManager : MonoBehaviour
 
     public void removeLemming(Lemming targetLemming)
     {
+        if (targetLemming.gameObject == player)
+        {
+            leaderDead = true;
+            targetLemming.killLeming();
+            return;
+        }
+
         if (!leaderDead)
         {
             int index = lemmings.IndexOf(targetLemming);
@@ -91,15 +105,15 @@ public class LemmingManager : MonoBehaviour
             lemmings.Remove(targetLemming);
             targetLemming.killLeming();
         }
+        else
+        {
+            lemmings.Remove(targetLemming);
+            targetLemming.killLeming();
+        }
     }
 
     public int GetLemmings()
     {
         return lemmings.Count;
-    }
-
-    public void KillLeader()
-    {
-        leaderDead = true;
     }
 }

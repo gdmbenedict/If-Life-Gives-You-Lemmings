@@ -31,6 +31,8 @@ public class PlayerController : MonoBehaviour
     private float timeSinceInput;
     private float recordedDirection;
 
+    private bool isDead = false;
+
     private void Awake()
     {
         gameManager = FindObjectOfType<GameManager>();
@@ -125,70 +127,73 @@ public class PlayerController : MonoBehaviour
     
     private IEnumerator Movefunction()
     {
-        if (!gotInput)
+        if (!isDead)
         {
-            //Debug.Log("waiting for input");
-            late = true;
-            timeSinceInput = 0f;
-            while (!gotInput && timeSinceInput < okayTiming)
+            if (!gotInput)
             {
-                yield return null;
-            }
-        }
-
-        //okay conditions
-        if (gotInput && timeSinceInput <= okayTiming && timeSinceInput > greatTiming && recordedDirection != 0 && !autofail)
-        {
-            //Debug.Log("okay timing: " + timeSinceInput);
-
-            //add score
-            score.Okay();
-            score.AddCombo();
-
-            //move animation
-            StartCoroutine(lemmingComponent.MoveAnimation(recordedDirection));
-        }
-        //great conditions
-        else if (gotInput && timeSinceInput <= greatTiming && timeSinceInput > perfectTiming && !autofail)
-        {
-            //Debug.Log("great timing: " + timeSinceInput);
-
-            if (recordedDirection == 0)
-            {
-                //twirl
+                //Debug.Log("waiting for input");
+                late = true;
+                timeSinceInput = 0f;
+                while (!gotInput && timeSinceInput < okayTiming)
+                {
+                    yield return null;
+                }
             }
 
-            //add score
-            score.Great();
-            score.AddCombo();
-
-            //move animation
-            StartCoroutine(lemmingComponent.MoveAnimation(recordedDirection));
-        }
-        //perfect conditions
-        else if (gotInput && timeSinceInput < perfectTiming && !autofail)
-        {
-            //Debug.Log("perfect timing: " + timeSinceInput);
-
-            if (recordedDirection == 0)
+            //okay conditions
+            if (gotInput && timeSinceInput <= okayTiming && timeSinceInput > greatTiming && recordedDirection != 0 && !autofail)
             {
-                //twirl
+                //Debug.Log("okay timing: " + timeSinceInput);
+
+                //add score
+                score.Okay();
+                score.AddCombo();
+
+                //move animation
+                StartCoroutine(lemmingComponent.MoveAnimation(recordedDirection));
             }
+            //great conditions
+            else if (gotInput && timeSinceInput <= greatTiming && timeSinceInput > perfectTiming && !autofail)
+            {
+                //Debug.Log("great timing: " + timeSinceInput);
 
-            //add score
-            score.Perfect();
-            score.AddCombo();
+                if (recordedDirection == 0)
+                {
+                    //twirl
+                }
 
-            //move animation
-            StartCoroutine(lemmingComponent.MoveAnimation(recordedDirection));
-            
-        }
-        //fail conditions
-        else
-        {
-            score.ResetCombo();
-            recordedDirection = 0;
-            //Debug.Log("Failed Timing: " + timeSinceInput);
+                //add score
+                score.Great();
+                score.AddCombo();
+
+                //move animation
+                StartCoroutine(lemmingComponent.MoveAnimation(recordedDirection));
+            }
+            //perfect conditions
+            else if (gotInput && timeSinceInput < perfectTiming && !autofail)
+            {
+                //Debug.Log("perfect timing: " + timeSinceInput);
+
+                if (recordedDirection == 0)
+                {
+                    //twirl
+                }
+
+                //add score
+                score.Perfect();
+                score.AddCombo();
+
+                //move animation
+                StartCoroutine(lemmingComponent.MoveAnimation(recordedDirection));
+
+            }
+            //fail conditions
+            else
+            {
+                score.ResetCombo();
+                recordedDirection = 0;
+                //Debug.Log("Failed Timing: " + timeSinceInput);
+            }
         }
 
         lemmingManager.LogDirection(recordedDirection);
@@ -219,5 +224,15 @@ public class PlayerController : MonoBehaviour
         greatTiming = baseGreatTiming / speedmodifier;
         okayTiming = baseOkayTiming / speedmodifier;
         clearDelay = baseClearDelay / speedmodifier;
+    }
+
+    public void killPlayer()
+    {
+        isDead = true;
+
+        //disable visualization
+        GetComponentInChildren<MeshRenderer>().enabled = false;
+        GetComponent<PlayerInput>().enabled = false;
+        terrainManager.DisableMovement();
     }
 }
