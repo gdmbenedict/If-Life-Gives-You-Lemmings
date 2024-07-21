@@ -3691,7 +3691,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "Font: Kaph Font - designed by GGBotNet\nIn Game Music: Country - by Alban_Gogh\nMenus
+  m_text: "Programmer: Matt Benedict\n3D Artist/SFX: Colton\n3D/2D Artist: Will\nFont:
+    Kaph Font - designed by GGBotNet\nIn Game Music: Country - by Alban_Gogh\nMenus
     Music: Lemming Aid - by Lunallian\r\nSFX: Silly Trumprt - by floraphonic  \nSFX:
     Weird Hiccup - by Pixabay \nSFX: Poof - by Pixabay "
   m_isRightToLeft: 0
@@ -3721,8 +3722,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 52
-  m_fontSizeBase: 52
+  m_fontSize: 48
+  m_fontSizeBase: 48
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
